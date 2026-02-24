@@ -128,15 +128,18 @@ def format_title_for_platform(
         return result
 
     elif platform == "telegram":
+        escaped_title = html_escape(cleaned_title)
+        escaped_source_name = html_escape(title_data["source_name"])
         if link_url:
-            formatted_title = f'<a href="{link_url}">{html_escape(cleaned_title)}</a>'
+            escaped_link_url = html_escape(link_url)
+            formatted_title = f'<a href="{escaped_link_url}">{escaped_title}</a>'
         else:
-            formatted_title = cleaned_title
+            formatted_title = escaped_title
 
         title_prefix = "🆕 " if title_data.get("is_new") else ""
 
         if show_source:
-            result = f"[{title_data['source_name']}] {title_prefix}{formatted_title}"
+            result = f"[{escaped_source_name}] {title_prefix}{formatted_title}"
         elif show_keyword and keyword:
             result = f"<b>[{html_escape(keyword)}]</b> {title_prefix}{formatted_title}"
         else:
